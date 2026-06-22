@@ -1,0 +1,274 @@
+[
+  // ==========================
+  // Window Management (SPC-w)
+  // ==========================
+  {
+    "key": "space w w",
+    "command": "workbench.action.focusNextGroup",
+    "when": "!terminalFocus && neovim.mode == 'normal' && !sideBarVisible",
+  },
+  {
+    "key": "space w w",
+    "command": "workbench.action.focusSideBar",
+    "when": "!terminalFocus && neovim.mode == 'normal' && sideBarVisible && !sideBarFocus",
+  },
+  {
+    "key": "space w w",
+    "command": "workbench.action.focusActiveEditorGroup",
+    "when": "!terminalFocus && neovim.mode == 'normal' && sideBarVisible && sideBarFocus",
+  },
+  {
+    "key": "space w v",
+    "command": "workbench.action.splitEditorRight",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space w s",
+    "command": "workbench.action.splitEditorDown",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space w c",
+    "command": "workbench.action.closeActiveEditor",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space w h",
+    "command": "workbench.action.focusLeftGroup",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space w l",
+    "command": "workbench.action.focusRightGroup",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space w j",
+    "command": "workbench.action.focusBelowGroup",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space w k",
+    "command": "workbench.action.focusAboveGroup",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  // ==========================
+  // Buffer Management (SPC-b)
+  // ==========================
+  {
+    "key": "space j",
+    "command": "workbench.action.previousEditor",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space k",
+    "command": "workbench.action.nextEditor",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space h",
+    "command": "workbench.action.closeActiveEditor",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space b b",
+    "command": "multiCommand.toggleLastTwoEditors",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  // ==========================
+  // Explorer Toggle (SPC-e)
+  // ==========================
+  {
+    "key": "space e",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  // ==========================
+  // Ctrl+/ Terminal Toggle (Global)
+  // ==========================
+  {
+    "key": "ctrl+/",
+    "command": "-editor.action.commentLine",
+  },
+  {
+    "key": "ctrl+/",
+    "command": "workbench.action.terminal.toggleTerminal",
+  },
+  // Create new terminal
+  {
+    "key": "ctrl+n",
+    "command": "workbench.action.terminal.new",
+    "when": "terminalFocus",
+  },
+  // Navigate to next terminal
+  {
+    "key": "ctrl+j",
+    "command": "workbench.action.terminal.focusNext",
+    "when": "terminalFocus",
+  },
+  // Navigate to previous terminal
+  {
+    "key": "ctrl+k",
+    "command": "workbench.action.terminal.focusPrevious",
+    "when": "terminalFocus",
+  },
+  {
+    "key": "ctrl+h",
+    "command": "workbench.action.terminal.kill",
+    "when": "terminalFocus",
+  },
+  // ==========================
+  // Terminal Rename (Ctrl + R)
+  // ==========================
+  {
+    "key": "ctrl+shift+r",
+    "command": "workbench.action.terminal.rename",
+    "when": "terminalFocus",
+  },
+  // ==========================
+  // Live Server (SPC-b)
+  // ==========================
+  {
+    "key": "space b s",
+    "command": "extension.liveServer.goOnline",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space b x",
+    "command": "extension.liveServer.goOffline",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  // ==========================
+  // Cut Copy Paste in Explorer
+  // ==========================
+  {
+    "key": "x",
+    "command": "filesExplorer.cut",
+    "when": "filesExplorerFocus && !inputFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "d",
+    "command": "deleteFile",
+    "when": "filesExplorerFocus && !inputFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "y",
+    "command": "filesExplorer.copy",
+    "when": "filesExplorerFocus && !inputFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "p",
+    "command": "filesExplorer.paste",
+    "when": "filesExplorerFocus && !inputFocus && neovim.mode == 'normal'",
+  },
+  // ==========================
+  // General Shortcuts (SPC)
+  // ==========================
+  {
+    "key": "space .",
+    "command": "workbench.action.quickOpen",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space f c",
+    "command": "workbench.action.openGlobalKeybindingsFile",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  // {
+  //   "key": "space f s",
+  //   "command": "workbench.action.openSettingsJson",
+  //   "when": "!terminalFocus && neovim.mode == 'normal'"
+  // },
+  {
+    "key": "space space",
+    "command": "workbench.action.showCommands",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  // ==========================
+  // Code Telescope (Space + f)
+  // ==========================
+  // Space f f  → Find Files (in current project)
+  {
+    "key": "space f f",
+    "command": "code-telescope.fuzzy.file",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  // Space f s  → Search in files (Live Grep / Text search)
+  {
+    "key": "space f a",
+    "command": "code-telescope.fuzzy.wsText",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  // Space f Space → You can use this for Current File Search or another action
+  {
+    "key": "space f s",
+    "command": "code-telescope.fuzzy.fileText",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space f b",
+    "command": "code-telescope.fuzzy.recentFiles",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  // ==========================
+  // UI Toggles (SPC-u)
+  // ==========================
+  {
+    "key": "space u s",
+    "command": "workbench.action.toggleStatusbarVisibility",
+    "when": "editorTextFocus && !terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space u m",
+    "command": "workbench.action.toggleMenuBar",
+    "when": "editorTextFocus && !terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space u b",
+    "command": "settings.cycle.toggleTabs",
+    "when": "editorTextFocus && !terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space u l",
+    "command": "settings.cycle.toggleRelativeLineNumbers",
+    "when": "editorTextFocus && !terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space u a",
+    "command": "workbench.action.toggleActivityBarVisibility",
+    "when": "editorTextFocus && !terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space u h",
+    "command": "settings.cycle.toggleFullTopBar",
+    "when": "editorTextFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space u c",
+    "command": "workbench.action.selectTheme",
+    "when": "!terminalFocus && neovim.mode == 'normal'",
+  },
+  {
+    "key": "space n n",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode == 'normal'",
+    "args": "zt",
+  },
+  {
+    "key": "space n m",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode == 'normal'",
+    "args": "zz",
+  },
+  // Accept inline suggestion line by line with Tab
+  {
+    "key": "tab",
+    "command": "editor.action.inlineSuggest.acceptNextLine",
+    "when": "inlineSuggestionVisible && !editorReadonly",
+  },
+  {
+    "key": "tab",
+    "command": "editor.toggleFold",
+    "when": "editorTextFocus && neovim.mode == 'normal' && foldingEnabled",
+  },
+]

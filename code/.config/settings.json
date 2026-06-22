@@ -1,0 +1,174 @@
+{
+  "vscode-neovim.compositeKeys": {
+    "jj": {
+      "command": "vscode-neovim.lua",
+      "args": [
+        [
+          "local code = require('vscode')",
+          "code.action('vscode-neovim.escape')",
+          "code.action('workbench.action.files.save')",
+        ],
+      ],
+    },
+  },
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1,
+  },
+  "vscode-neovim.useSystemClipboard": true,
+  "vscode-neovim.neovimClean": false,
+  "workbench.view.showQuietly": {
+    "workbench.panel.output": true,
+    "files.autoSave": "onFocusChange",
+  },
+  // Newly added
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true,
+  },
+  "editor.renderLineHighlight": "none",
+  "editor.suggestOnTriggerCharacters": true,
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.wordWrap": "on", // or "off" or "bounded"
+  // setting for toggleing ui
+  "settings.cycle": [
+    {
+      "id": "toggleTabs",
+      "values": [
+        {
+          "workbench.editor.showTabs": "multiple",
+        },
+        {
+          "workbench.editor.showTabs": "none",
+        },
+      ],
+    },
+    {
+      "id": "toggleRelativeLineNumbers",
+      "values": [
+        {
+          "editor.lineNumbers": "relative",
+        },
+        {
+          "editor.lineNumbers": "off",
+        },
+      ],
+    },
+  ],
+  // My settings ends here
+  "editor.scrollbar.vertical": "hidden",
+  "editor.scrollbar.horizontal": "hidden",
+  "workbench.editor.showTabs": "multiple",
+  "editor.lineNumbers": "relative",
+  "workbench.iconTheme": "material-icon-theme",
+  "breadcrumbs.enabled": false,
+  "window.titleBarStyle": "native",
+  "window.enableMenuBarMnemonics": false,
+  "window.customMenuBarAltFocus": false,
+  "editor.padding.top": 20,
+  "editor.padding.bottom": 40,
+  "editor.smoothScrolling": true,
+  "editor.cursorSmoothCaretAnimation": "on",
+  "workbench.list.smoothScrolling": true,
+  "terminal.integrated.smoothScrolling": true,
+  "editor.cursorBlinking": "smooth",
+  "window.menuBarVisibility": "toggle",
+  "editor.stickyScroll.enabled": false,
+  "window.commandCenter": false,
+  "window.customTitleBarVisibility": "never",
+  "editor.mouseWheelZoom": true,
+  "files.saveConflictResolution": "overwriteFileOnDisk",
+  //new added settings
+  "editor.fontFamily": "JetBrainsMono Nerd Font, monospace",
+  "editor.fontSize": 15,
+  "editor.fontLigatures": true,
+  "editor.fontWeight": "800",
+  "editor.lineHeight": 1.6,
+
+  "editor.semanticHighlighting.enabled": true,
+
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      // Bold Keywords only (const, let, function, import, etc.)
+      {
+        "scope": [
+          "keyword",
+          "keyword.control",
+          "storage.type",
+          "storage.modifier",
+        ],
+        "settings": {
+          "fontStyle": "bold italic",
+        },
+      },
+
+      // Italic Comments
+      {
+        "scope": "comment",
+        "settings": {
+          "fontStyle": "italic",
+        },
+      },
+
+      // Italic Variables & Parameters
+      {
+        "scope": [
+          "variable",
+          "variable.other.readwrite",
+          "variable.parameter",
+          "entity.name.variable",
+        ],
+        "settings": {
+          "fontStyle": "italic",
+        },
+      },
+    ],
+  },
+
+  "editor.semanticTokenColorCustomizations": {
+    "rules": {
+      "variable": { "fontStyle": "italic" },
+      "parameter": { "fontStyle": "italic" },
+    },
+  },
+  "oneDarkPro.bold": true,
+  "explorer.compactFolders": false,
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "typescript.experimental.useTsgo": true,
+  "[javascriptreact]": {},
+  "workbench.settings.useSplitJSON": false,
+  "workbench.settings.editor": "json",
+  "workbench.settings.openDefaultSettings": false,
+  "errorLens.enabledDiagnosticLevels": ["warning", "info", "error"],
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "javascriptreact": true,
+    "javascript": false,
+  },
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "hediet.vscode-drawio.resizeImages": null,
+  "background.windowBackgrounds": [
+    "/home/l/Walllpapers/la_ilaha_illallah_wallpaper_hd_4k_by_sahibdm_dddajlf-fullview.jpg",
+    "/home/l/Walllpapers/black-white-girl.png"
+  ],
+  "editor.minimap.renderCharacters": false,
+  "editor.minimap.enabled": false,
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "workbench.activityBar.location": "hidden",
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+  },
+  "workbench.statusBar.visible": false,
+}
