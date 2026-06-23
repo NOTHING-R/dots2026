@@ -60,32 +60,35 @@ vim.keymap.set("n", "<leader>faa", function()
 end, { desc = "Find in Notes" })
 
 -- FUZZY FIND
-local fb = require("telescope").extensions.file_browser
-local wk = require("which-key")
-
-wk.add({
-  {
-    "<leader>.",
-    function()
-      fb.file_browser({
-        path = vim.fn.expand("%:p:h"), -- current file dir (IMPORTANT)
-        select_buffer = true,
-      })
-    end,
-    desc = "File Browser (current dir)",
-  },
-})
+-- Previous code
+-- local fb = require("telescope").extensions.file_browser
+-- local wk = require("which-key")
+--
+-- wk.add({
+--   {
+--     "<leader>.",
+--     function()
+--       fb.file_browser({
+--         path = vim.fn.expand("%:p:h"), -- current file dir (IMPORTANT)
+--         select_buffer = true,
+--       })
+--     end,
+--     desc = "File Browser (current dir)",
+--   },
+-- })
+-- This is a simpler way to set the keymap without using which-key
+vim.keymap.set("n", "<leader>.", function()
+  require("telescope").extensions.file_browser.file_browser({
+    path = vim.fn.expand("%:p:h"),
+    select_buffer = true,
+  })
+end, { desc = "File Browser (current dir)" })
 
 vim.keymap.set("n", "<leader><space>", function()
   require("telescope.builtin").find_files({
     cwd = vim.fn.systemlist("git rev-parse --show-toplevel")[1] or vim.fn.getcwd(),
   })
 end, { desc = "Find Files from git root" })
-
-vim.keymap.set("n", "<leader>fhf", function()
-  vim.cmd("cd ~/.config/hypr")
-  vim.cmd("Ex")
-end, { desc = "Open Hypr config" })
 
 -- ==========================
 -- OPEN VIDEO UNDER CURSOR WITH MPV
