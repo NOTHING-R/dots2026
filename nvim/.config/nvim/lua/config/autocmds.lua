@@ -1,6 +1,18 @@
+-- This was the previous one
+-- vim.api.nvim_create_autocmd("InsertLeave", {
+--   pattern = "*",
+--   command = "silent! write",
+-- })
+--
+
+-- to this (only save named files, skip unnamed/special buffers):
 vim.api.nvim_create_autocmd("InsertLeave", {
   pattern = "*",
-  command = "silent! write",
+  callback = function()
+    if vim.bo.buftype == "" and vim.fn.expand("%") ~= "" then
+      vim.cmd("silent! write")
+    end
+  end,
 })
 
 -- For disableing speelcheck on md files
@@ -58,11 +70,12 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(args)
-    vim.lsp.inlay_hint.enable(false, { bufnr = args.buf })
-  end,
-})
+-- it was uncommented before, but I don't want inlay hints for now, so commenting it out
+-- vim.api.nvim_create_autocmd("LspAttach", {
+--   callback = function(args)
+--     vim.lsp.inlay_hint.enable(false, { bufnr = args.buf })
+--   end,
+-- })
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "org",
