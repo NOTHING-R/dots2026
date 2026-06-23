@@ -3,7 +3,7 @@ vim.opt.clipboard = "unnamedplus" -- For using global clipboard
 vim.opt.termguicolors = true
 vim.g.root_spec = { "cwd" }
 
-vim.g.inlay_hints_enabled = true
+vim.g.inlay_hints_enabled = false -- it was true
 
 -- For line warp
 vim.opt.wrap = true
@@ -20,7 +20,11 @@ vim.opt.concealcursor = "nv"
 vim.opt.autochdir = false -- এটা off রাখাই better
 
 vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- change this:
+-- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- to this:
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+
 vim.opt.foldenable = false -- don't fold everything on open
 vim.opt.foldlevel = 99 -- start with all folds open
 
