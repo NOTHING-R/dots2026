@@ -3,9 +3,19 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
+      diagnostics = {
+        virtual_text = true,
+      },
+
+      inlay_hints = { enabled = false },
+      codelens = { enabled = false },
+
       servers = {
         -- copilot.lua only works with its own copilot lsp server
         -- HTML (only .html files)
+        ts_ls = {
+          enabled = false,
+        },
         html = {
           filetypes = { "html" },
         },
@@ -32,19 +42,40 @@ return {
         },
 
         -- JS / TS / React / JSX / TSX (vtsls is the modern tsserver)
+        -- vtsls = {
+        --   filetypes = {
+        --     "javascript",
+        --     "javascriptreact",
+        --     "typescript",
+        --     "typescriptreact",
+        --   },
+        --   settings = {
+        --     typescript = {
+        --       preferences = { importModuleSpecifier = "relative" },
+        --     },
+        --     javascript = {
+        --       preferences = { importModuleSpecifier = "relative" },
+        --     },
+        --   },
+        -- },
+
         vtsls = {
-          filetypes = {
-            "javascript",
-            "javascriptreact",
-            "typescript",
-            "typescriptreact",
-          },
+          filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
           settings = {
             typescript = {
               preferences = { importModuleSpecifier = "relative" },
+              suggest = { completeFunctionCalls = false },
             },
             javascript = {
               preferences = { importModuleSpecifier = "relative" },
+            },
+            vtsls = {
+              experimental = {
+                completion = {
+                  enableServerSideFuzzyMatch = true,
+                  entriesLimit = 50,
+                },
+              },
             },
           },
         },
@@ -77,7 +108,11 @@ return {
               workspace = {
                 checkThirdParty = false,
                 -- makes lua_ls aware of neovim globals like vim.*
-                library = vim.api.nvim_get_runtime_file("", true),
+                -- library = vim.api.nvim_get_runtime_file("", true),
+                library = {
+                  vim.fn.expand("$VIMRUNTIME/lua"),
+                  vim.fn.stdpath("config") .. "/lua",
+                },
               },
               diagnostics = {
                 globals = { "vim" }, -- no "undefined global vim" warnings
