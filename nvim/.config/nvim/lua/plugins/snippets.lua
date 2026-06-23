@@ -20,7 +20,7 @@ return {
       end
     end, { silent = true })
 
-    vim.keymap.set({ "i", "s" }, "<C-k>", function()
+    vim.keymap.set({ "i", "s" }, "<C-b>", function()
       if luasnip.jumpable(-1) then
         luasnip.jump(-1)
       end
