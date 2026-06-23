@@ -26,7 +26,7 @@ return {
           show_in_snippet = true,
         },
         list = {
-          max_items = 200, -- fewer candidates to score/render
+          max_items = 50, -- fewer candidates to score/render
         },
         menu = {
           max_height = 10,
