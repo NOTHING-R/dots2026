@@ -2,6 +2,8 @@
 require("config.lazy")
 require("config.toggles")
 require("config.orgextra")
+require("config.markdown")
+require("plugins.copilot-chat")
 
 -- This is for vscode-neovim extension, which allows you to use Neovim as the editor in VS Code. It provides a more native Neovim experience within VS Code, including better performance and compatibility with Neovim plugins. The code below sets up key mappings for navigating folds and toggling them using the Tab key when running inside VS Code.
 if vim.g.vscode then
