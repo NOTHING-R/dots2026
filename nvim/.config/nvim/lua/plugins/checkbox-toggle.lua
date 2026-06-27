@@ -1,0 +1,12 @@
+return {}
+-- return {
+--   "opdavies/toggle-checkbox.nvim",
+--   ft = { "markdown", "org" },
+--   keys = {
+--     {
+--       "<leader>x",
+--       "<cmd>lua require('toggle-checkbox').toggle()<CR>",
+--       desc = "Toggle checkbox",
+--     },
+--   },
+-- }
