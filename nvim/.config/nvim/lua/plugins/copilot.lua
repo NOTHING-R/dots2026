@@ -31,8 +31,12 @@ return {
         menu = {
           max_height = 10,
         },
+        -- documentation = {
+        --   auto_show = false, -- skip auto-fetching docs popup, reduces per-keystroke work
+        -- },
         documentation = {
-          auto_show = false, -- skip auto-fetching docs popup, reduces per-keystroke work
+          auto_show = true,
+          auto_show_delay_ms = 300,
         },
       },
       sources = {
