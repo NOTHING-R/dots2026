@@ -113,3 +113,126 @@ vim.keymap.set("n", "<leader>cp", function()
     vim.notify("Copilot OFF", vim.log.levels.INFO)
   end
 end, { desc = "Toggle Copilot" })
+
+-- ==========================
+-- ORG MODE
+-- ==========================
+local org = vim.keymap.set
+
+-- Agenda views
+org("n", "<leader>oa", "<cmd>lua require('orgmode').action('agenda.prompt')<CR>", { desc = "Org Agenda" })
+org("n", "<leader>ot", "<cmd>lua require('orgmode').action('agenda.todos')<CR>", { desc = "Org TODO list" })
+org("n", "<leader>oc", "<cmd>lua require('orgmode').action('capture.prompt')<CR>", { desc = "Org Capture" })
+
+-- Telescope orgmode
+org("n", "<leader>oh", "<cmd>Telescope orgmode search_headings<CR>", { desc = "Search org headings" })
+org("n", "<leader>or", "<cmd>Telescope orgmode refile_heading<CR>", { desc = "Refile heading" })
+
+-- Quick file access
+org("n", "<leader>ofi", "<cmd>e ~/orgfiles/inbox.org<CR>", { desc = "Open inbox" })
+org("n", "<leader>ofj", "<cmd>e ~/orgfiles/journal.org<CR>", { desc = "Open journal" })
+org("n", "<leader>ofn", "<cmd>e ~/orgfiles/notes.org<CR>", { desc = "Open notes" })
+org("n", "<leader>ofr", "<cmd>e ~/orgfiles/routine.org<CR>", { desc = "Open notes" })
+org("n", "<leader>ofg", "<cmd>e ~/orgfiles/gher.org<CR>", { desc = "Gher er hisab" })
+org("n", "<leader>off", "<cmd>e ~/orgfiles/finance.org<CR>", { desc = "Monthly Cost" })
+
+vim.keymap.set("n", "<leader>os", function()
+  require("orgmode").action("org_mappings.todo_next_state")
+end, { desc = "Org next TODO state" })
+
+-- ==========================
+-- MARKDOWN CHECKBOX TOGGLE WITH TIMESTAMP
+-- ==========================
+vim.keymap.set("n", "<leader>x", function()
+  local line = vim.api.nvim_get_current_line()
+  local new_line
+  local date = os.date("%H:%M")
+
+  if line:match("%[x%]") then
+    -- checked → uncheck, remove ✓ timestamp
+    new_line = line:gsub(" ✓ %d%d:%d%d$", "")
+    new_line = new_line:gsub("%[x%]", "[ ]", 1)
+  elseif line:match("%[ %]") then
+    -- unchecked → check with ✓ timestamp
+    new_line = line:gsub("%[ %]", "[x]", 1)
+    new_line = new_line .. " ✓ " .. date
+  else
+    return
+  end
+
+  vim.api.nvim_set_current_line(new_line)
+end, { desc = "Toggle markdown checkbox with timestamp" })
+
+-- Add TODO directly to current org file at end of file
+vim.keymap.set("n", "<leader>oT", function()
+  local current_file = vim.fn.expand("%:p")
+  if not current_file:match("%.org$") then
+    vim.notify("Not an org file", vim.log.levels.WARN)
+    return
+  end
+  local date = os.date("%Y-%m-%d %a")
+  local scheduled = os.date("<%Y-%m-%d %a>")
+  -- local created = os.date("<%Y-%m-%d %a %H:%M>")
+  local created = os.date("<%Y-%m-%d>")
+  local task = vim.fn.input("Task: ")
+  if task == "" then
+    return
+  end
+  local lines = {
+    "* TODO " .. task,
+    "SCHEDULED: " .. created,
+    -- "   :PROPERTIES:",
+    -- "   :CREATED: " .. created,
+    -- "   :END:",
+    "",
+  }
+  local buf_lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  for _, line in ipairs(lines) do
+    table.insert(buf_lines, line)
+  end
+  vim.api.nvim_buf_set_lines(0, 0, -1, false, buf_lines)
+  vim.cmd("silent write")
+  vim.notify("Task added to " .. vim.fn.expand("%:t"), vim.log.levels.INFO)
+end, { desc = "Add TODO to current org file" })
+
+-- ==========================
+-- ADD NEW CHECKBOX WITH TIMESTAMP
+-- ==========================
+-- vim.keymap.set("n", "<leader>cb", function()
+--   -- local date = os.date("%a %b %d %Y %H:%M => ")
+--   local date = os.date("%a %b %d %Y %H:%M => ")
+--   local line_num = vim.api.nvim_win_get_cursor(0)[1]
+--   local current_line = vim.api.nvim_get_current_line()
+--   local indent = current_line:match("^(%s*)") or "   "
+--   local new_line = indent .. "- [ ] " .. date .. " "
+--   vim.api.nvim_buf_set_lines(0, line_num, line_num, false, { new_line })
+--   vim.api.nvim_win_set_cursor(0, { line_num + 1, #new_line })
+--   vim.cmd("startinsert!")
+-- end, { desc = "Add new checkbox with creation timestamp" })
+
+vim.keymap.set("n", "<leader>cb", function()
+  local line_num = vim.api.nvim_win_get_cursor(0)[1]
+  local current_line = vim.api.nvim_get_current_line()
+  local indent = current_line:match("^(%s*)") or "   "
+  local new_line = indent .. "- [ ] "
+  vim.api.nvim_buf_set_lines(0, line_num, line_num, false, { new_line })
+  vim.api.nvim_win_set_cursor(0, { line_num + 1, #new_line })
+  vim.cmd("startinsert!")
+end, { desc = "Add new checkbox" })
+
+-- ==========================
+-- CHECKBOX TIMESTAMP HIGHLIGHTS
+-- ==========================
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+  pattern = { "*.md", "*.org" },
+  callback = function()
+    -- Creation time [Sat Jun 28 2026 09:15] — blue/cyan
+    vim.fn.matchadd("CheckboxCreated", "%[%a%a%a %a%a%a %d%d %d%d%d%d %d%d:%d%d%]")
+    -- Completion time (Sat Jun 28 2026 10:30) — green
+    vim.fn.matchadd("CheckboxDone", "(%a%a%a %a%a%a %d%d %d%d%d%d %d%d:%d%d)")
+  end,
+})
+
+-- Define the colors
+vim.api.nvim_set_hl(0, "CheckboxCreated", { fg = "#7dcfff", bold = false })
+vim.api.nvim_set_hl(0, "CheckboxDone", { fg = "#9ece6a", bold = false })
