@@ -10,6 +10,7 @@ return {
         "css",
         "html",
         "json",
+        "sql",
       })
     end,
   },

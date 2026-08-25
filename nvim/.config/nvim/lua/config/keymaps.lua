@@ -59,6 +59,10 @@ vim.keymap.set("n", "<leader>faa", function()
   require("telescope.builtin").find_files({ cwd = "~/my-shared-fiels/Progrmain Notes/" })
 end, { desc = "Find in Notes" })
 
+vim.keymap.set("n", "<leader>fad", function()
+  require("telescope.builtin").find_files({ cwd = "~/dots2026/" })
+end, { desc = "All dotfiles" })
+
 -- FUZZY FIND
 -- Previous code
 -- local fb = require("telescope").extensions.file_browser

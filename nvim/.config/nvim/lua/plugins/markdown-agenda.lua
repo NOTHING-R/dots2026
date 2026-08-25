@@ -1,0 +1,313 @@
+return {}
+-- lua/plugins/md-agenda.lua
+-- return {
+--   {
+--     "nvim-telescope/telescope.nvim",
+--     keys = {
+--       -- <leader>md  insert # TODO: Jun 30 2026 (once per day)
+--       -- <leader>ms  insert ## SECTION heading
+--       -- <leader>mx  toggle checkbox + auto-update section :DONE
+--       -- <leader>mf  toggle entire day # TODO :DONE manually
+--       -- <leader>mt  telescope: today's tasks
+--       -- <leader>mm  telescope: this month's tasks
+--
+--       -- Insert the day heading (once per day)
+--       {
+--         "<leader>md",
+--         function()
+--           if vim.bo.filetype ~= "markdown" then
+--             return
+--           end
+--           local heading = os.date("# TODO: %b %d %Y")
+--           local row = vim.api.nvim_win_get_cursor(0)[1]
+--           vim.api.nvim_buf_set_lines(0, row, row, false, { "", heading, "" })
+--           vim.api.nvim_win_set_cursor(0, { row + 3, 0 })
+--         end,
+--         desc = "MD: insert day heading",
+--       },
+--
+--       -- Insert a ## section heading under the day
+--       {
+--         "<leader>ms",
+--         function()
+--           if vim.bo.filetype ~= "markdown" then
+--             return
+--           end
+--           local row = vim.api.nvim_win_get_cursor(0)[1]
+--           vim.api.nvim_buf_set_lines(0, row, row, false, { "", "## " })
+--           vim.api.nvim_win_set_cursor(0, { row + 2, 3 })
+--           vim.cmd("startinsert!")
+--         end,
+--         desc = "MD: insert section heading",
+--       },
+--
+--       -- Toggle checkbox + auto-mark section :DONE when all tasks checked
+--       {
+--         "<leader>mx",
+--         function()
+--           if vim.bo.filetype ~= "markdown" then
+--             return
+--           end
+--
+--           -- toggle the checkbox on current line
+--           local line = vim.api.nvim_get_current_line()
+--           local new_line
+--           local time = os.date("%H:%M")
+--
+--           if line:match("%[x%]") then
+--             new_line = line:gsub(" ✓ %d%d:%d%d$", "")
+--             new_line = new_line:gsub("%[x%]", "[ ]", 1)
+--           elseif line:match("%[ %]") then
+--             new_line = line:gsub("%[ %]", "[x]", 1)
+--             new_line = new_line .. " ✓ " .. time
+--           else
+--             return
+--           end
+--           vim.api.nvim_set_current_line(new_line)
+--
+--           -- re-fetch all lines after the edit
+--           local buf = vim.api.nvim_get_current_buf()
+--           local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+--           local cursor_row = vim.api.nvim_win_get_cursor(0)[1]
+--
+--           -- walk up to find nearest ## section heading
+--           local section_row = nil
+--           for i = cursor_row, 1, -1 do
+--             if lines[i]:match("^## ") then
+--               section_row = i
+--               break
+--             end
+--             -- stop if we hit the # day heading before finding a section
+--             if lines[i]:match("^# ") then
+--               break
+--             end
+--           end
+--           if not section_row then
+--             return
+--           end
+--
+--           -- scan tasks under that ## section
+--           local all_done = true
+--           local has_tasks = false
+--           for i = section_row + 1, #lines do
+--             -- stop at next ## or # heading
+--             if lines[i]:match("^#") then
+--               break
+--             end
+--             if lines[i]:match("%[ %]") then
+--               all_done = false
+--               has_tasks = true
+--             elseif lines[i]:match("%[x%]") then
+--               has_tasks = true
+--             end
+--           end
+--
+--           if not has_tasks then
+--             return
+--           end
+--
+--           -- update the ## section heading
+--           local sec_line = lines[section_row]
+--           local new_sec
+--           if all_done then
+--             -- add :DONE if not already there
+--             if not sec_line:match(" :DONE$") then
+--               new_sec = sec_line .. " :DONE"
+--             end
+--           else
+--             -- remove :DONE if present
+--             new_sec = sec_line:gsub(" :DONE$", "")
+--           end
+--
+--           if new_sec and new_sec ~= sec_line then
+--             vim.api.nvim_buf_set_lines(buf, section_row - 1, section_row, false, { new_sec })
+--           end
+--         end,
+--         desc = "MD: toggle checkbox + update section",
+--       },
+--
+--       -- Manually toggle the day heading # TODO :DONE
+--       {
+--         "<leader>mf",
+--         function()
+--           if vim.bo.filetype ~= "markdown" then
+--             return
+--           end
+--           local buf = vim.api.nvim_get_current_buf()
+--           local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+--           local cursor_row = vim.api.nvim_win_get_cursor(0)[1]
+--
+--           -- walk up to find # TODO or # DONE day heading
+--           local day_row = nil
+--           for i = cursor_row, 1, -1 do
+--             if lines[i]:match("^# [TD]") then
+--               day_row = i
+--               break
+--             end
+--           end
+--           if not day_row then
+--             vim.notify("No day heading found above cursor", vim.log.levels.WARN)
+--             return
+--           end
+--
+--           local day_line = lines[day_row]
+--           local new_day
+--           if day_line:match(" :DONE$") then
+--             new_day = day_line:gsub(" :DONE$", "")
+--           elseif day_line:match("^# DONE:") then
+--             new_day = day_line:gsub("^# DONE:", "# TODO:")
+--           else
+--             new_day = day_line .. " :DONE"
+--           end
+--
+--           vim.api.nvim_buf_set_lines(buf, day_row - 1, day_row, false, { new_day })
+--         end,
+--         desc = "MD: toggle day heading :DONE",
+--       },
+--
+--       -- Telescope: today
+--       {
+--         "<leader>mtt",
+--         function()
+--           local today_label = os.date("%b %d %Y")
+--           local today_heading = "# TODO: " .. today_label
+--           local todo_dir = vim.fn.expand("~/TODOS")
+--           local files = vim.fn.globpath(todo_dir, "*.md", false, true)
+--
+--           local results = {}
+--           local line_map = {}
+--
+--           for _, filepath in ipairs(files) do
+--             local fname = vim.fn.fnamemodify(filepath, ":t:r")
+--             local lines = vim.fn.readfile(filepath)
+--             local in_block = false
+--
+--             for _, line in ipairs(lines) do
+--               if line:match("^# [TODO|DONE].*" .. today_label) then
+--                 in_block = true
+--                 table.insert(results, "")
+--                 table.insert(results, "📄 " .. fname:upper() .. "  →  " .. line)
+--                 line_map[#results] = filepath
+--               elseif in_block then
+--                 if line:match("^# ") then
+--                   in_block = false
+--                 elseif line:match("^## ") then
+--                   -- only show ## section headings, skip tasks
+--                   table.insert(results, "   " .. line)
+--                   line_map[#results] = filepath
+--                 end
+--                 -- skip everything else (checkboxes, blank lines, etc.)
+--               end
+--             end
+--           end
+--
+--           if #results == 0 then
+--             vim.notify("No TODO block for today found", vim.log.levels.INFO)
+--             return
+--           end
+--
+--           local buf = vim.api.nvim_create_buf(false, true)
+--           vim.api.nvim_buf_set_lines(buf, 0, -1, false, results)
+--           vim.bo[buf].filetype = "markdown"
+--           vim.bo[buf].modifiable = false
+--
+--           local width = math.floor(vim.o.columns * 0.55)
+--           local height = math.floor(vim.o.lines * 0.5)
+--           local win = vim.api.nvim_open_win(buf, true, {
+--             relative = "editor",
+--             width = width,
+--             height = height,
+--             row = math.floor((vim.o.lines - height) / 2),
+--             col = math.floor((vim.o.columns - width) / 2),
+--             style = "minimal",
+--             border = "rounded",
+--             title = " Today: " .. today_label .. " ",
+--             title_pos = "center",
+--           })
+--
+--           local ns = vim.api.nvim_create_namespace("md_agenda_files")
+--           for lnum, _ in pairs(line_map) do
+--             local line_text = results[lnum]
+--             if line_text and line_text:match("^📄") then
+--               vim.api.nvim_buf_add_highlight(buf, ns, "Title", lnum - 1, 0, -1)
+--             elseif line_text and line_text:match("^   ##") then
+--               local hl = line_text:match(":DONE") and "Comment" or "Function"
+--               vim.api.nvim_buf_add_highlight(buf, ns, hl, lnum - 1, 0, -1)
+--             end
+--           end
+--
+--           vim.keymap.set("n", "<CR>", function()
+--             local cursor_line = vim.api.nvim_win_get_cursor(0)[1]
+--             local target_file = line_map[cursor_line]
+--             if not target_file then
+--               return
+--             end
+--
+--             vim.api.nvim_win_close(win, true)
+--             vim.cmd("edit " .. vim.fn.fnameescape(target_file))
+--
+--             local flines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+--             for i, fline in ipairs(flines) do
+--               if fline:match("^# [TODO|DONE].*" .. today_label) then
+--                 vim.api.nvim_win_set_cursor(0, { i, 0 })
+--                 vim.cmd("normal! zz")
+--                 break
+--               end
+--             end
+--           end, { buffer = buf, silent = true })
+--
+--           vim.keymap.set("n", "q", "<cmd>bd!<cr>", { buffer = buf, silent = true })
+--         end,
+--         desc = "MD: today's tasks",
+--       },
+--
+--       -- Telescope: this month
+--       {
+--         "<leader>mm",
+--         function()
+--           local month = os.date("@%Y-%m")
+--           require("telescope.builtin").grep_string({
+--             search = month,
+--             search_dirs = { vim.fn.expand("~/TODOS") },
+--             prompt_title = "Tasks: " .. month,
+--           })
+--         end,
+--         desc = "MD: this month's tasks",
+--       },
+--     },
+--   },
+--   -- :DONE highlight in the actual markdown buffer
+--   --   {
+--   --     "nvim-treesitter/nvim-treesitter",
+--   --     config = function()
+--   --       local ns = vim.api.nvim_create_namespace("md_done_hl")
+--   --
+--   --       local function apply_done_highlights(buf)
+--   --         vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
+--   --         local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+--   --
+--   --         for i, line in ipairs(lines) do
+--   --           if line:match("^# ") or line:match("^## ") then
+--   --             if line:match(":DONE") then
+--   --               vim.api.nvim_buf_add_highlight(buf, ns, "Comment", i - 1, 0, -1)
+--   --               local s, e = line:find(":DONE")
+--   --               if s then
+--   --                 vim.api.nvim_buf_add_highlight(buf, ns, "DiagnosticOk", i - 1, s - 1, e)
+--   --               end
+--   --             else
+--   --               local hl = line:match("^## ") and "@markup.heading.2.markdown" or "@markup.heading.1.markdown"
+--   --               vim.api.nvim_buf_add_highlight(buf, ns, hl, i - 1, 0, -1)
+--   --             end
+--   --           end
+--   --         end
+--   --       end
+--   --
+--   --       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "TextChanged", "TextChangedI" }, {
+--   --         pattern = "*.md",
+--   --         callback = function(ev)
+--   --           apply_done_highlights(ev.buf)
+--   --         end,
+--   --       })
+--   --     end,
+--   --   },
+-- }

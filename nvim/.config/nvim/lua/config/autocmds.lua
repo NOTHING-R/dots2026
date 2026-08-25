@@ -114,3 +114,25 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     vim.api.nvim_set_hl(0, "Folded", { bg = "NONE", fg = "#545c7e" })
   end,
 })
+
+-- When the last real buffer is closed, wipe the leftover [No Name] buffer
+vim.api.nvim_create_autocmd("BufDelete", {
+  callback = function()
+    vim.schedule(function()
+      local real_bufs = vim.tbl_filter(function(b)
+        return vim.api.nvim_buf_is_valid(b)
+          and vim.bo[b].buflisted
+          and vim.bo[b].buftype == ""
+          and vim.fn.bufname(b) ~= ""
+      end, vim.api.nvim_list_bufs())
+
+      if #real_bufs == 0 then
+        for _, b in ipairs(vim.api.nvim_list_bufs()) do
+          if vim.api.nvim_buf_is_valid(b) and vim.fn.bufname(b) == "" and vim.bo[b].buftype == "" then
+            pcall(vim.api.nvim_buf_delete, b, { force = true })
+          end
+        end
+      end
+    end)
+  end,
+})

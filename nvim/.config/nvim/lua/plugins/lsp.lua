@@ -28,6 +28,10 @@ return {
         cssls = {
           filetypes = { "css", "scss", "less" },
         },
+        -- sql:
+        sqlls = {
+          filetypes = { "sql", "mysql", "plsql" },
+        },
 
         -- Tailwind (html, jsx, tsx, js, ts, css)
         tailwindcss = {
